@@ -1,0 +1,1 @@
+web: gunicorn muziart/muziart.wsgi --log-file -

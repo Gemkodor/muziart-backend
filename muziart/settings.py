@@ -34,11 +34,13 @@ SECRET_KEY = 'django-insecure-bbaks=nyh*dzk5w=9mj7&wpysn1s$^ba5@_4%j4vyqm0y39c&t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME', ''), 'localhost']
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = ['https://' + os.environ.get('RENDER_EXTERNAL_HOSTNAME', '')]  # We add your frontend URL here.
-CSRF_TRUSTED_ORIGINS = ['https://' + os.environ.get('RENDER_EXTERNAL_HOSTNAME', '')]
+CORS_ALLOWED_ORIGINS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME', '')]  # We add your frontend URL here.
+CSRF_TRUSTED_ORIGINS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME', '')]
 
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 # Application definition
 

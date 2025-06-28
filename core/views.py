@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 import json
+import os
 
 from django.views.decorators.http import require_http_methods, require_POST
 from django.contrib.auth.decorators import login_required
@@ -9,6 +10,11 @@ from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.contrib.auth import authenticate, login, logout
 from .forms import CreateUserForm
 from .models import Profile
+
+def index(request):
+    frontend_url = os.environ.get("FRONTEND_URL")
+
+    return render(request, 'core/index.html', {'frontend_url': frontend_url})
 
 @ensure_csrf_cookie
 @require_http_methods(['GET'])

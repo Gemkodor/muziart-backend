@@ -21,23 +21,22 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Current environment: 'development', 'production', etc.
-DJANGO_ENV = os.getenv('DJANGO_ENV', 'development')
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-bbaks=nyh*dzk5w=9mj7&wpysn1s$^ba5@_4%j4vyqm0y39c&t'
+SECRET_KEY = os.environ.get('SECRET_KEY', default='django-insecure-bbaks=nyh*dzk5w=9mj7&wpysn1s$^ba5@_4%j4vyqm0y39c&t')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_ENV') == "development"
+DEBUG = 'RENDER' not in os.environ
 
-ALLOWED_HOSTS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME', ''), 'localhost']
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME', '')]  # We add your frontend URL here.
+ALLOWED_HOSTS = []
 
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+"""
 # CSRF 
 RENDER_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
 if RENDER_HOSTNAME:
@@ -47,12 +46,29 @@ if RENDER_HOSTNAME:
         CSRF_TRUSTED_ORIGINS = [f"https://{RENDER_HOSTNAME}"]
 
 # CORS
+CORS_ALLOW_CREDENTIALS = True
 FRONTEND_URL = os.environ.get("FRONTEND_URL")
 if FRONTEND_URL:
     if DEBUG:
         CORS_ALLOWED_ORIGINS = [f"http://{FRONTEND_URL}"]
     else:
         CORS_ALLOWED_ORIGINS = [f"https://{FRONTEND_URL}"]
+""" 
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]  # We add your frontend URL here.
+CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']  # We add your frontend URL here.
+
+FRONTEND_URL = ""
+if DEBUG:
+    FRONTEND_URL = "http://"
+else:
+    FRONTEND_URL = "https://"
+FRONTEND_URL += os.environ.get("FRONTEND_URL")
+
+CORS_ALLOWED_ORIGINS = [FRONTEND_URL]
+CSRF_TRUSTED_ORIGINS = [FRONTEND_URL]
+
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
@@ -66,7 +82,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
+    'core.apps.CoreConfig',
     'corsheaders'
 ]
 
@@ -109,7 +125,6 @@ DATABASES = {
     'default': dj_database_url.parse(
         os.getenv("DATABASE_URL"),
         conn_max_age=600,  # for PostgreSQL performance
-        ssl_require=DJANGO_ENV == 'production'  # force SSL in prod
     )
 }
 
@@ -135,7 +150,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'FR-fr'
 
 TIME_ZONE = 'UTC'
 

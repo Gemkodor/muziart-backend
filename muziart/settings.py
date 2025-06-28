@@ -36,28 +36,6 @@ RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
-"""
-# CSRF 
-RENDER_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
-if RENDER_HOSTNAME:
-    if DEBUG:
-        CSRF_TRUSTED_ORIGINS = [f"http://{RENDER_HOSTNAME}"]
-    else:
-        CSRF_TRUSTED_ORIGINS = [f"https://{RENDER_HOSTNAME}"]
-
-# CORS
-CORS_ALLOW_CREDENTIALS = True
-FRONTEND_URL = os.environ.get("FRONTEND_URL")
-if FRONTEND_URL:
-    if DEBUG:
-        CORS_ALLOWED_ORIGINS = [f"http://{FRONTEND_URL}"]
-    else:
-        CORS_ALLOWED_ORIGINS = [f"https://{FRONTEND_URL}"]
-""" 
-
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]  # We add your frontend URL here.
-CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']  # We add your frontend URL here.
 
 FRONTEND_URL = ""
 if DEBUG:
@@ -66,8 +44,18 @@ else:
     FRONTEND_URL = "https://"
 FRONTEND_URL += os.environ.get("FRONTEND_URL")
 
+# Cors
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [FRONTEND_URL]
+
+# CSRF cookie
+CSRF_COOKIE_SECURE   = True
+CSRF_COOKIE_SAMESITE = "None"
 CSRF_TRUSTED_ORIGINS = [FRONTEND_URL]
+
+# Session cookie (optional, but same rule)
+SESSION_COOKIE_SECURE   = True
+SESSION_COOKIE_SAMESITE = "None"
 
 
 SESSION_COOKIE_SECURE = True

@@ -32,12 +32,27 @@ DJANGO_ENV = os.getenv('DJANGO_ENV', 'development')
 SECRET_KEY = 'django-insecure-bbaks=nyh*dzk5w=9mj7&wpysn1s$^ba5@_4%j4vyqm0y39c&t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_ENV') == "development"
 
 ALLOWED_HOSTS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME', ''), 'localhost']
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME', '')]  # We add your frontend URL here.
-CSRF_TRUSTED_ORIGINS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME', '')]
+
+# CSRF 
+RENDER_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+if RENDER_HOSTNAME:
+    if DEBUG:
+        CSRF_TRUSTED_ORIGINS = [f"http://{RENDER_HOSTNAME}"]
+    else:
+        CSRF_TRUSTED_ORIGINS = [f"https://{RENDER_HOSTNAME}"]
+
+# CORS
+FRONTEND_URL = os.environ.get("FRONTEND_URL")
+if FRONTEND_URL:
+    if DEBUG:
+        CORS_ALLOWED_ORIGINS = [f"http://{FRONTEND_URL}"]
+    else:
+        CORS_ALLOWED_ORIGINS = [f"https://{FRONTEND_URL}"]
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True

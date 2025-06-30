@@ -74,8 +74,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'core.apps.CoreConfig',
-    'corsheaders'
+    'games.apps.GamesConfig'
 ]
 
 MIDDLEWARE = [

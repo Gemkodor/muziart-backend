@@ -7,11 +7,11 @@ from django.views.decorators.http import require_GET
 COMPOSERS_TRACKS = [
     {
         "name": "Edvar Grieg",
-        "track_ids": [473218992]
+        "track_ids": [473218992, 473219382]
     },
     {
         "name": "Ludwig van Beethoven",
-        "track_ids": [473219002, 473219202, 473219232]
+        "track_ids": [473219002, 473219202, 473219232, 473219282, 473219432]
     },
     {
         "name": "Antonio Vivaldi",
@@ -39,7 +39,7 @@ COMPOSERS_TRACKS = [
     },
     {
         "name": "Johann Sebastian Bach",
-        "track_ids": [473219072, 473219122]
+        "track_ids": [473219072, 473219122, 473219322, 473219402]
     },
     {
         "name": "Gustav Holst",
@@ -55,7 +55,7 @@ COMPOSERS_TRACKS = [
     },
     {
         "name": "Wolfgang Amadeus Mozart",
-        "track_ids": [473219112, 473219192]
+        "track_ids": [473219112, 473219192, 473219262, 473219312, 473219352, 473219362, 473219472]
     },
     {
         "name": "Jules Massenet",
@@ -63,7 +63,11 @@ COMPOSERS_TRACKS = [
     },
     {
         "name": "Antonín Dvořák",
-        "track_ids": [473219142]
+        "track_ids": [473219142, 473219322]
+    },
+    {
+        "name": "Johann Strauss (Père)",
+        "track_ids": [473219422]
     },
     {
         "name": "Johann Strauss II",
@@ -87,23 +91,69 @@ COMPOSERS_TRACKS = [
     },
     {
         "name": "Georges Bizet",
-        "track_ids": [473219222]
+        "track_ids": [473219222, 473219412]
+    },
+    {
+        "name": "Jacques Offenbach",
+        "track_ids": [473219242]
+    },
+    {
+        "name": "Remo Giazotto",
+        "track_ids": [473219252]
+    },
+    {
+        "name": "Gioachino Rossini",
+        "track_ids": [473219272]
+    },
+    {
+        "name": "Bedřich Smetana",
+        "track_ids": [473219292]
+    },
+    {
+        "name": "Luigi Boccherini",
+        "track_ids": [473219302]
+    },
+    {
+        "name": "Jean Sibelius",
+        "track_ids": [473219342]
+    },    {
+        "name": "George Frideric Handel",
+        "track_ids": [473219372]
+    },
+    {
+        "name": "Gabriel Fauré",
+        "track_ids": [473219392]
+    },
+    {
+        "name": "Stanley Myers",
+        "track_ids": [473219442]
+    },
+    {
+        "name": "Arcangelo Corelli,",
+        "track_ids": [473219452]
+    },
+    {
+        "name": "Sergueï Rachmaninov",
+        "track_ids": [473219462]
     }
 ]
 
-@require_GET
-def deezer_albums(request, album_id):
-    url = f"https://api.deezer.com/album/{album_id}"
-    try:
-        r = requests.get(url, timeout=5)
-        r.raise_for_status()
-    except requests.RequestException as exc:
-        return JsonResponse(
-            {"error": "Deezer API unavailable", "detail": str(exc)}, status=502
-        )
 
-    album = r.json()
-    tracks = album.get("tracks", {}).get("data", [])
+def get_all_deezer_tracks(tracklist_url):
+    tracks = []
+    while tracklist_url:
+        response = requests.get(tracklist_url)
+        data = response.json()
+        tracks.extend(data["data"])
+        tracklist_url = data.get("next")
+    return tracks
+
+
+@require_GET
+def get_deezer_album(request, album_id):
+    album = requests.get(f"https://api.deezer.com/album/{album_id}").json()
+    tracklist_url = album["tracklist"]
+    tracks = get_all_deezer_tracks(tracklist_url)
 
     def find_composer(track_id):
         for composer in COMPOSERS_TRACKS:
@@ -123,9 +173,9 @@ def deezer_albums(request, album_id):
         composer_name = find_composer(track["id"])
         if composer_name:
             q["composer"] = composer_name
-
-        # Add to list
-        quizz.append(q)
+            
+            # Add to list (only when composer found)
+            quizz.append(q)
 
     random.shuffle(quizz)
     return JsonResponse(quizz, safe=False)

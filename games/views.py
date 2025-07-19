@@ -2,6 +2,7 @@ import requests
 import random
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
+import logging
 
 
 COMPOSERS_TRACKS = [
@@ -151,7 +152,15 @@ def get_all_deezer_tracks(tracklist_url):
 
 @require_GET
 def get_deezer_album(request, album_id):
-    album = requests.get(f"https://api.deezer.com/album/{album_id}").json()
+    response = requests.get(f"https://api.deezer.com/album/{album_id}", timeout=10, verify=True)
+    
+    print("Deezer API status:", response.status_code)
+    print("Response text:", response.text)
+    
+    logging.basicConfig(level=logging.DEBUG)
+    logging.debug(response.text)
+    
+    album = response.json()
     tracklist_url = album["tracklist"]
     tracks = get_all_deezer_tracks(tracklist_url)
 

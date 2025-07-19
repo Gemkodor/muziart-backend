@@ -143,7 +143,11 @@ COMPOSERS_TRACKS = [
 def get_all_deezer_tracks(tracklist_url):
     tracks = []
     while tracklist_url:
-        response = requests.get(tracklist_url)
+        response = requests.get(tracklist_url, timeout=10, verify=True)
+        
+        print("Get all deezer tracks API status:", response.status_code)
+        print("Response text:", response.text)
+        
         data = response.json()
         tracks.extend(data["data"])
         tracklist_url = data.get("next")

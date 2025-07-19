@@ -162,9 +162,18 @@ def get_deezer_album(request, album_id):
     tracks = get_all_deezer_tracks(tracklist_url)
 
     def find_composer(track_id):
+        try:
+            track_id = int(track_id)
+        except ValueError:
+            return None
+        
         for composer in COMPOSERS_TRACKS:
             if track_id in composer["track_ids"]:
+                print(f"[DEBUG] Match found: Track {track_id} -> Composer {composer['name']}")
                 return composer["name"]
+            
+        print(f"[DEBUG] No composer match for track_id: {track_id}")
+        return None
 
     quizz = []
     for track in tracks:
@@ -172,19 +181,16 @@ def get_deezer_album(request, album_id):
         q = {
             "id": track["id"],
             "title": track["title"],
-            "preview": track["preview"],
-            "composer": "Test"
+            "preview": track["preview"]
         }
 
         # Find and add composer
-        """
         composer_name = find_composer(track["id"])
         if composer_name:
             q["composer"] = composer_name
             
             # Add to list (only when composer found)
             quizz.append(q)
-        """
         quizz.append(q)
         
     random.shuffle(quizz)

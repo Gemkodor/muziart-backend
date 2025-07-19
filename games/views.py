@@ -2,8 +2,6 @@ import requests
 import random
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
-import logging
-
 
 COMPOSERS_TRACKS = [
     {
@@ -144,10 +142,9 @@ def get_all_deezer_tracks(tracklist_url):
     tracks = []
     while tracklist_url:
         response = requests.get(tracklist_url, timeout=10, verify=True)
-        
-        print("Get all deezer tracks API status:", response.status_code)
-        print("Response text:", response.text)
-        
+    
+        print("Get all deezer tracks status:", response.status_code)
+
         data = response.json()
         tracks.extend(data["data"])
         tracklist_url = data.get("next")
@@ -158,12 +155,8 @@ def get_all_deezer_tracks(tracklist_url):
 def get_deezer_album(request, album_id):
     response = requests.get(f"https://api.deezer.com/album/{album_id}", timeout=10, verify=True)
     
-    print("Deezer API status:", response.status_code)
-    print("Response text:", response.text)
-    
-    logging.basicConfig(level=logging.DEBUG)
-    logging.debug(response.text)
-    
+    print("Get deezer album status:", response.status_code)
+
     album = response.json()
     tracklist_url = album["tracklist"]
     tracks = get_all_deezer_tracks(tracklist_url)
@@ -179,16 +172,20 @@ def get_deezer_album(request, album_id):
         q = {
             "id": track["id"],
             "title": track["title"],
-            "preview": track["preview"]
+            "preview": track["preview"],
+            "composer": "Test"
         }
 
         # Find and add composer
+        """
         composer_name = find_composer(track["id"])
         if composer_name:
             q["composer"] = composer_name
             
             # Add to list (only when composer found)
             quizz.append(q)
-
+        """
+        quizz.append(q)
+        
     random.shuffle(quizz)
     return JsonResponse(quizz, safe=False)

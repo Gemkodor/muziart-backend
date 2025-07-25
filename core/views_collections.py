@@ -3,13 +3,27 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
-from .models import Profile, Card, ProfileCard
+from .models import Profile, Card, ProfileCard, CollectionCategory
 import json
 
 def get_cards(request):
-    profile = get_object_or_404(Profile, user=request.user)
-    user_cards = ProfileCard.objects.filter(profile=profile).values_list('card_id', flat=True)
-    cards = Card.objects.all()
+    category = request.GET.get('category')  # ex: "composer" ou "instrument"
+
+    if not category:
+        return JsonResponse({'error': 'Missing category parameter'}, status=400)
+
+    try:
+        category_obj = CollectionCategory.objects.get(name=category)
+    except CollectionCategory.DoesNotExist:
+        return JsonResponse({'error': 'Invalid category'}, status=400)
+    
+    # Get cards from category requested
+    cards = Card.objects.filter(category=category_obj)
+    
+    # Check cards are unlocked by user
+    user_profile = get_object_or_404(Profile, user=request.user)
+    unlocked_card_ids = ProfileCard.objects.filter(profile=user_profile).values_list('card_id', flat=True)
+    
     data = []
     
     for card in cards:
@@ -19,11 +33,14 @@ def get_cards(request):
             'image_name': card.image_name,
             'category': card.category.name,
             'rarity': card.rarity.name,
-            'unlocked': card.id in user_cards,
+            'unlocked': card.id in unlocked_card_ids,
             'priceToUnlock': card.price_to_unlock
         })
     
-    return JsonResponse({'cards': data, 'nb_cards_unlocked': len(user_cards)})
+    return JsonResponse({
+        'cards': data, 
+        'nb_cards_unlocked': len(unlocked_card_ids)
+    })
 
 @csrf_exempt
 @login_required

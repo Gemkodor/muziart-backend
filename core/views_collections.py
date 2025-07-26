@@ -22,16 +22,19 @@ def get_cards(request):
     
     # Check cards are unlocked by user
     user_profile = get_object_or_404(Profile, user=request.user)
-    unlocked_card_ids = ProfileCard.objects.filter(profile=user_profile).values_list('card_id', flat=True)
+    unlocked_card_ids = ProfileCard.objects.filter(
+        profile=user_profile, 
+        card__category=category_obj
+    ).values_list('card_id', flat=True)
     
     data = []
-    
     for card in cards:
         data.append({
             'id': card.id,
             'name': card.name,
             'image_name': card.image_name,
             'category': card.category.name,
+            'description': card.description,
             'rarity': card.rarity.name,
             'unlocked': card.id in unlocked_card_ids,
             'priceToUnlock': card.price_to_unlock

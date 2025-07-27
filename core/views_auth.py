@@ -66,5 +66,5 @@ def register(request):
         form.save()
         return JsonResponse({'success': 'User registered successfully'}, status=201)
     else:
-        errors = forms.errors.as_json()
+        errors = form.errors.as_json()
         return JsonResponse({'errors': errors}, status=400)

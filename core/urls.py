@@ -11,6 +11,7 @@ urlpatterns = [
     
     # Keys endpoints
     path('api/keys/add_keys/', views_keys.add_keys, name='add_keys'),
+    path('api/keys/add_xp/', views_keys.add_xp, name='add_xp'),
     
     # Collections endpoints
     path('api/collections/cards/', views_collections.get_cards, name='get_cards'),

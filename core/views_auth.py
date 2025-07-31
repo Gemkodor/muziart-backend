@@ -51,9 +51,15 @@ def logout_view(request):
 def user(request):
     if request.user.is_authenticated:
         profile = get_object_or_404(Profile, user=request.user)
-        return JsonResponse(
-            {'username': request.user.username, 'email': request.user.email, 'nb_keys': profile.nb_keys}
-        )
+        data = {
+            'username': request.user.username,
+            'email': request.user.email,
+            'level': profile.get_level(),
+            'experience': profile.experience,
+            'progress': round(profile.get_progression_ratio(), 2),
+            'nb_keys': profile.nb_keys
+        }
+        return JsonResponse(data)
     return JsonResponse(
         {'message': 'Not logged in'}, status=401
     )

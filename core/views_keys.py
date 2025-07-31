@@ -23,3 +23,20 @@ def add_keys(request):
         return JsonResponse({"status": "success", "new_total": profile.nb_keys}, status=201)
     except (ValueError, json.JSONDecodeError):
         return JsonResponse({"error": "Invalid JSON"}, status=400)
+    
+    
+def add_xp(request):
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        experience_winned = int(data.get('xp_winned'))
+        profile = get_object_or_404(Profile, user=request.user)
+        profile.experience += experience_winned
+        profile.save(update_fields=["experience"])
+        return JsonResponse({
+            'status': "success", 
+            'level': profile.get_level(),
+            'experience': profile.experience,
+            'progress': round(profile.get_progression_ratio(), 2),
+        }, status=201)
+    except (ValueError, json.JSONDecodeError):
+        return JsonResponse({"error": "Invalid JSON"}, status=400)

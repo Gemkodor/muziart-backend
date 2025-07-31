@@ -30,9 +30,23 @@ class CardRarity(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     nb_keys = models.IntegerField(default=0)
+    experience = models.IntegerField(default=0)
 
     def __str__(self):
         return "Profil de {}".format(self.user.username)
+    
+    def get_level(self):
+        return (self.experience // 100) + 1
+
+    def get_current_level_xp_range(self):
+        level = self.get_level()
+        min_xp = (level - 1) * 100
+        max_xp = level * 100
+        return min_xp, max_xp
+
+    def get_progression_ratio(self):
+        min_xp, max_xp = self.get_current_level_xp_range()
+        return (self.experience - min_xp) / (max_xp - min_xp)
 
 
 class Card(models.Model):

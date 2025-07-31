@@ -57,7 +57,7 @@ def user(request):
             'level': profile.get_level(),
             'experience': profile.experience,
             'progress': round(profile.get_progression_ratio(), 2),
-            'nb_keys': profile.nb_keys
+            'nbKeys': profile.nb_keys
         }
         return JsonResponse(data)
     return JsonResponse(

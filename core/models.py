@@ -73,6 +73,25 @@ class ProfileCard(models.Model):
         return f"{self.profile.user.username} - {self.card.name}"
 
 
+class Lesson(models.Model):
+    title = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    chapter = models.CharField(max_length=100, blank=True)
+    order = models.PositiveIntegerField(default=0)
+    
+    def __str__(self):
+        return f"{self.chapter} - {self.title}"
+
+
+class CompletedLesson(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="completed_lessons")
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    completed_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = ('profile', 'lesson')
+
+
 # Signals
 # Create profile when a user is created
 

@@ -45,7 +45,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return JsonResponse({'message': 'Logged out'})
+    return JsonResponse({'success': True, 'message': 'Logged out'})
 
 @require_http_methods(['GET'])
 def user(request):

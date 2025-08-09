@@ -17,10 +17,9 @@ def add_keys(request):
             return JsonResponse({"error": "nb_keys_winned must be > 0"}, status=400)
         
         profile = get_object_or_404(Profile, user=request.user)
-        profile.nb_keys += nb_keys_winned
-        profile.save(update_fields=["nb_keys"])
+        profile.add_keys(nb_keys_winned)
 
-        return JsonResponse({"status": "success", "new_total": profile.nb_keys}, status=201)
+        return JsonResponse({"status": "success", "new_total": profile.nb_keys, "new_streak_count": profile.streak_count}, status=201)
     except (ValueError, json.JSONDecodeError):
         return JsonResponse({"error": "Invalid JSON"}, status=400)
     

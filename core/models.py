@@ -1,7 +1,9 @@
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
 from django.contrib.auth.models import User
+from datetime import timedelta
 
 
 class CollectionCategory(models.Model):
@@ -31,6 +33,8 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     nb_keys = models.IntegerField(default=0)
     experience = models.IntegerField(default=0)
+    streak_count = models.PositiveIntegerField(default=0)
+    last_streak_date = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return "Profil de {}".format(self.user.username)
@@ -47,6 +51,24 @@ class Profile(models.Model):
     def get_progression_ratio(self):
         min_xp, max_xp = self.get_current_level_xp_range()
         return (self.experience - min_xp) / (max_xp - min_xp)
+    
+    def update_streak(self):
+        today = timezone.now().date()
+        if self.last_streak_date == today:
+            # Already done today
+            return
+        if self.last_streak_date == today - timedelta(days=1):
+            # Streak continues
+            self.streak_count += 1
+        else:
+            # Streak is broken
+            self.streak_count = 1
+        self.last_streak_date = today
+        
+    def add_keys(self, amount: int):
+        self.nb_keys += amount
+        self.update_streak()
+        self.save(update_fields=["nb_keys", "streak_count", "last_streak_date"])
 
 
 class Card(models.Model):

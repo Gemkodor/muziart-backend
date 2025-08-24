@@ -12,11 +12,12 @@ def get_completed_ids(profile):
     )
 
 
-@login_required
 def lessons_list(request):
     lessons = Lesson.objects.all().order_by('order')
-    profile = get_object_or_404(Profile, user=request.user)
-    completed_ids = get_completed_ids(profile)
+    completed_ids = []
+    if request.user.is_authenticated:
+        profile = get_object_or_404(Profile, user=request.user)
+        completed_ids = get_completed_ids(profile)
     data = [
         {
             "id": lesson.id,
@@ -51,7 +52,7 @@ def complete_lesson(request, lesson_slug):
         completed.is_completed = True
         completed.completed_at = timezone.now().date()
         completed.save()
-        """"
+        
         if created: # reward only on first completion
             profile.experience += 10
             profile.add_keys(5)
@@ -59,13 +60,15 @@ def complete_lesson(request, lesson_slug):
             message = "Lesson completed! Rewards granted."
         else:
             message = "Lesson already completed"
-        """
-        
-    profile.experience += 10
-    profile.add_keys(5)
-    profile.save()
-    message = "Lesson completed! Rewards granted."
-    return JsonResponse({"message": message, "lesson_id": lesson.id, "completed": True, "updated_xp": profile.experience})
+            
+    return JsonResponse({
+        "message": message, 
+        "lesson_id": lesson.id, 
+        "completed": True, 
+        "updated_xp": profile.experience, 
+        "level": profile.get_level(), 
+        "progress": round(profile.get_progression_ratio(), 2)
+    })
 
 
 def uncomplete_lesson(request, lesson_slug):

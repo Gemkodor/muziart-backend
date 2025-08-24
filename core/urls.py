@@ -18,6 +18,9 @@ urlpatterns = [
     path('api/collections/cards/unlock', views_collections.unlock_card, name='unlock_card'),
     
     path('api/lessons/', views_lessons.lessons_list, name='lessons-list'),
+    path('api/lessons/<slug:lesson_slug>', views_lessons.lesson, name='lesson'),
+    path('api/lessons/<slug:lesson_slug>/complete/', views_lessons.complete_lesson, name='complete-lesson'),
+    path('api/lessons/<slug:lesson_slug>/uncomplete/', views_lessons.uncomplete_lesson, name='uncomplete-lesson'),
     
     # Index endpoint
     path('', views_auth.index, name='index'),

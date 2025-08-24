@@ -109,6 +109,7 @@ class CompletedLesson(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="completed_lessons")
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     completed_at = models.DateTimeField(auto_now_add=True)
+    is_completed = models.BooleanField(default=False)
     
     class Meta:
         unique_together = ('profile', 'lesson')

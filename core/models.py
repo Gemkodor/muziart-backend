@@ -54,15 +54,20 @@ class Profile(models.Model):
     
     def update_streak(self):
         today = timezone.now().date()
+        
         if self.last_streak_date == today:
-            # Already done today
+            if self.streak_count == 0:
+                # Streak starts
+                self.streak_count = 1
             return
+        
         if self.last_streak_date == today - timedelta(days=1):
             # Streak continues
             self.streak_count += 1
         else:
             # Streak is broken
-            self.streak_count = 1
+            self.streak_count = 0
+            
         self.last_streak_date = today
         
     def add_keys(self, amount: int):

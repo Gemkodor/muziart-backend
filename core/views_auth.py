@@ -38,6 +38,9 @@ def login_view(request):
 
     if user:
         login(request, user)
+        profile = get_object_or_404(Profile, user=user)
+        profile.update_streak()
+        profile.save()
         return JsonResponse({'success': True})
     return JsonResponse(
         {'success': False, 'message': 'Invalid credentials'}, status=401

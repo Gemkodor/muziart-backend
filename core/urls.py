@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views_auth, views_collections, views_keys, views_lessons
+from . import views_auth, views_collections, views_keys, views_lessons, views_games
 
 urlpatterns = [
     # Authentication endpoints
@@ -17,10 +17,14 @@ urlpatterns = [
     path('api/collections/cards/', views_collections.get_cards, name='get_cards'),
     path('api/collections/cards/unlock', views_collections.unlock_card, name='unlock_card'),
     
+    # Lessons endpoints
     path('api/lessons/', views_lessons.lessons_list, name='lessons-list'),
     path('api/lessons/<slug:lesson_slug>', views_lessons.lesson, name='lesson'),
     path('api/lessons/<slug:lesson_slug>/complete/', views_lessons.complete_lesson, name='complete-lesson'),
     path('api/lessons/<slug:lesson_slug>/uncomplete/', views_lessons.uncomplete_lesson, name='uncomplete-lesson'),
+    
+    # Instruments
+    path('api/instruments/', views_games.instruments_list, name='instruments-list'),
     
     # Index endpoint
     path('', views_auth.index, name='index'),

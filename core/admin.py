@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Card, ProfileCard, CollectionCategory, CardRarity, Lesson
+from .models import Card, ProfileCard, CollectionCategory, CardRarity, Lesson, Instrument
 
 
 @admin.register(Card)
@@ -36,3 +36,8 @@ class CardRarityAdmin(admin.ModelAdmin):
 @admin.register(Lesson)
 class Lesson(admin.ModelAdmin):
     list_display = ('title', 'slug', 'chapter', 'order')
+
+
+@admin.register(Instrument)
+class Instrument(admin.ModelAdmin):
+    list_display = ('name', 'image_name', 'level')

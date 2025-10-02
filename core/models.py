@@ -120,6 +120,15 @@ class CompletedLesson(models.Model):
         unique_together = ('profile', 'lesson')
 
 
+class Instrument(models.Model):
+    name = models.CharField(max_length=100)
+    image_name = models.CharField(max_length=100)
+    level = models.IntegerField(default=1)
+    
+    def __str__(self):
+        return self.name
+    
+
 # Signals
 # Create profile when a user is created
 

@@ -120,14 +120,22 @@ class CompletedLesson(models.Model):
         unique_together = ('profile', 'lesson')
 
 
+class InstrumentCategory(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Instrument(models.Model):
     name = models.CharField(max_length=100)
     image_name = models.CharField(max_length=100)
     level = models.IntegerField(default=1)
+    category = models.ForeignKey(InstrumentCategory, null=True, blank=True, on_delete=models.PROTECT, related_name='instruments')
     
     def __str__(self):
         return self.name
-    
+
 
 # Signals
 # Create profile when a user is created

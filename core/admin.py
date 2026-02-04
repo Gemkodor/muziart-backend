@@ -1,5 +1,10 @@
 from django.contrib import admin
-from .models import Card, ProfileCard, CollectionCategory, CardRarity, Lesson, Instrument, InstrumentCategory
+from .models import Profile, Card, ProfileCard, CollectionCategory, CardRarity, Lesson, Instrument, InstrumentCategory, ScrollingGameLevel, MusicNote, NoteName
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'nb_keys', 'experience', 'streak_count', 'last_streak_date', 'current_scrolling_game_level')
 
 
 @admin.register(Card)
@@ -45,4 +50,19 @@ class Instrument(admin.ModelAdmin):
 
 @admin.register(InstrumentCategory)
 class InstrumentCategoryAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+
+@admin.register(ScrollingGameLevel)
+class ScrollingGameLevelAdmin(admin.ModelAdmin):
+    list_display = ('level_number',)
+
+
+@admin.register(MusicNote)
+class MusicNoteAdmin(admin.ModelAdmin):
+    list_display = ('note', 'position')
+
+
+@admin.register(NoteName)
+class NoteNameAdmin(admin.ModelAdmin):
     list_display = ('name',)

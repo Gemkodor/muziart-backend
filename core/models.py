@@ -35,6 +35,7 @@ class Profile(models.Model):
     experience = models.IntegerField(default=0)
     streak_count = models.PositiveIntegerField(default=0)
     last_streak_date = models.DateField(null=True, blank=True)
+    current_scrolling_game_level = models.IntegerField(default=1)
 
     def __str__(self):
         return "Profil de {}".format(self.user.username)
@@ -136,6 +137,29 @@ class Instrument(models.Model):
     def __str__(self):
         return self.name
 
+
+class ScrollingGameLevel(models.Model):
+    level_number = models.PositiveIntegerField(unique=True)
+    notes = models.ManyToManyField('MusicNote')
+    
+    def __str__(self):
+        return f"{self.level_number}"
+
+
+class NoteName(models.Model):
+    name = models.CharField(max_length=10)
+    
+    def __str__(self):
+        return self.name
+
+
+class MusicNote(models.Model):
+    note = models.ForeignKey(NoteName, on_delete=models.CASCADE)
+    position = models.IntegerField()
+    
+    def __str__(self):
+        return f"{self.note.name}{self.position}"
+    
 
 # Signals
 # Create profile when a user is created

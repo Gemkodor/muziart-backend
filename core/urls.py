@@ -26,6 +26,8 @@ urlpatterns = [
     # Instruments
     path('api/instruments/', views_games.instruments_list, name='instruments-list'),
     
+    path('api/scrolling-game/level/<int:level_number>/', views_games.scrolling_game_level, name='scrolling-game-levels'),
+    
     # Index endpoint
     path('', views_auth.index, name='index'),
 ]

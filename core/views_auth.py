@@ -61,7 +61,8 @@ def user(request):
             'experience': profile.experience,
             'progress': round(profile.get_progression_ratio(), 2),
             'nbKeys': profile.nb_keys,
-            'streak': profile.streak_count
+            'streak': profile.streak_count,
+            'scrollingGameLevel': profile.current_scrolling_game_level
         }
         return JsonResponse(data)
     return JsonResponse(

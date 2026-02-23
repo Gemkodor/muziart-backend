@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views_auth, views_keys, views_games
+from . import views_auth, views_keys
 
 urlpatterns = [
     # Authentication endpoints
@@ -12,12 +12,7 @@ urlpatterns = [
     # Keys endpoints
     path('api/keys/add_keys/', views_keys.add_keys, name='add_keys'),
     path('api/keys/add_xp/', views_keys.add_xp, name='add_xp'),
-    
-    # Instruments
-    path('api/instruments/', views_games.instruments_list, name='instruments-list'),
-    
-    path('api/scrolling-game/level/<int:level_number>/', views_games.scrolling_game_level, name='scrolling-game-levels'),
-    
+
     # Index endpoint
     path('', views_auth.index, name='index'),
 ]

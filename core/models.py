@@ -4,7 +4,7 @@ from django.dispatch import receiver
 from django.utils import timezone
 from django.contrib.auth.models import User
 from datetime import timedelta
-
+    
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -13,6 +13,7 @@ class Profile(models.Model):
     streak_count = models.PositiveIntegerField(default=0)
     last_streak_date = models.DateField(null=True, blank=True)
     current_scrolling_game_level = models.IntegerField(default=1)
+    nb_correct_answers_srolling_game = models.IntegerField(default=0)
 
     def __str__(self):
         return "Profil de {}".format(self.user.username)
@@ -52,31 +53,6 @@ class Profile(models.Model):
         self.nb_keys += amount
         self.update_streak()
         self.save(update_fields=["nb_keys", "streak_count", "last_streak_date"])
-
-
-class InstrumentCategory(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
-    def __str__(self):
-        return self.name
-
-
-class Instrument(models.Model):
-    name = models.CharField(max_length=100)
-    image_name = models.CharField(max_length=100)
-    level = models.IntegerField(default=1)
-    category = models.ForeignKey(InstrumentCategory, null=True, blank=True, on_delete=models.PROTECT, related_name='instruments')
-    
-    def __str__(self):
-        return self.name
-
-
-class ScrollingGameLevel(models.Model):
-    level_number = models.PositiveIntegerField(unique=True)
-    notes = models.ManyToManyField('MusicNote')
-    
-    def __str__(self):
-        return f"{self.level_number}"
 
 
 class NoteName(models.Model):

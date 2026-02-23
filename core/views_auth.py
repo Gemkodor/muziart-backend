@@ -1,19 +1,21 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
-import json
-import os
-
 from django.views.decorators.http import require_http_methods, require_POST
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth import authenticate, login, logout
-from .forms import CreateUserForm
-from .models import Profile
+import json
+import os
+from core.forms import CreateUserForm
+from core.models import Profile
+from games.models import ScrollingGame
+
 
 def index(request):
     frontend_url = os.environ.get("FRONTEND_URL")
 
     return render(request, 'core/index.html', {'frontend_url': frontend_url})
+
 
 @ensure_csrf_cookie
 @require_http_methods(['GET'])
@@ -22,6 +24,7 @@ def set_csrf_token(request):
     We set the CSRF cookie on the frontend
     """
     return JsonResponse({'message': 'CSRF cookie set'})
+
 
 @require_http_methods(['POST'])
 def login_view(request):
@@ -46,14 +49,17 @@ def login_view(request):
         {'success': False, 'message': 'Invalid credentials'}, status=401
     )
 
+
 def logout_view(request):
     logout(request)
     return JsonResponse({'success': True, 'message': 'Logged out'})
+
 
 @require_http_methods(['GET'])
 def user(request):
     if request.user.is_authenticated:
         profile = get_object_or_404(Profile, user=request.user)
+        
         data = {
             'username': request.user.username,
             'email': request.user.email,
@@ -62,12 +68,24 @@ def user(request):
             'progress': round(profile.get_progression_ratio(), 2),
             'nbKeys': profile.nb_keys,
             'streak': profile.streak_count,
-            'scrollingGameLevel': profile.current_scrolling_game_level
         }
+        
+        scrolling_game = ScrollingGame.objects.filter(profile=profile).first()
+        if scrolling_game:
+            data['scrollingGameLevel'] = scrolling_game.current_level
+            data['scrollingGameScore'] = scrolling_game.nb_correct_answers
+        else:
+            # Create a new ScrollingGame instance for the user if it doesn't exist
+            new_scrolling_game = ScrollingGame.objects.create(profile=profile)
+            new_scrolling_game.save()
+            data['scrollingGameLevel'] = new_scrolling_game.current_level
+            data['scrollingGameScore'] = new_scrolling_game.nb_correct_answers
+        
         return JsonResponse(data)
     return JsonResponse(
         {'message': 'Not logged in'}, status=401
     )
+
 
 @require_http_methods(['POST'])
 def register(request):

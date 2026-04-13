@@ -28,16 +28,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', default='django-insecure-bbaks=nyh*dzk5w=9mj7&wpysn1s$^ba5@_4%j4vyqm0y39c&t')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 'RENDER' not in os.environ
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['api.muziart.fr']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
 if DEBUG:
     ALLOWED_HOSTS.append('localhost')
-
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
 FRONTEND_URL = ""
@@ -63,7 +59,7 @@ if DEBUG:
     SESSION_COOKIE_SECURE = False
     # Ne pas définir CSRF_COOKIE_DOMAIN
 else:
-    CSRF_COOKIE_DOMAIN = ".muziart.fr"
+    CSRF_COOKIE_DOMAIN = os.environ.get('CSRF_COOKIE_DOMAIN', '')
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
 

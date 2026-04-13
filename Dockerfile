@@ -19,9 +19,6 @@ RUN uv sync --frozen --no-dev
 # Copy source
 COPY . .
 
-# Collect static files
-RUN uv run python manage.py collectstatic --no-input
-
 EXPOSE 8000
 
-CMD ["sh", "-c", "uv run python manage.py migrate && uv run gunicorn muziart.wsgi:application --bind 0.0.0.0:8000 --workers 3"]
+CMD ["sh", "-c", "uv run python manage.py collectstatic --no-input && uv run python manage.py migrate && uv run gunicorn muziart.wsgi:application --bind 0.0.0.0:8000 --workers 3"]

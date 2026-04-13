@@ -41,7 +41,7 @@ if DEBUG:
     FRONTEND_URL = "http://"
 else:
     FRONTEND_URL = "https://"
-FRONTEND_URL += os.environ.get("FRONTEND_URL")
+FRONTEND_URL += os.environ.get("FRONTEND_URL", "localhost")
 
 # Cors
 CORS_ALLOW_CREDENTIALS = True

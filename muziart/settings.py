@@ -121,7 +121,7 @@ WSGI_APPLICATION = 'muziart.wsgi.application'
 DATABASES = {
     'default': dj_database_url.parse(
         os.getenv("DATABASE_URL"),
-        conn_max_age=600,  # for PostgreSQL performance
+        conn_max_age=600,
     )
 }
 

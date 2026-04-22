@@ -49,7 +49,7 @@ CORS_ALLOWED_ORIGINS = [FRONTEND_URL]
 
 # CSRF cookie
 CSRF_COOKIE_SAMESITE = "None"
-CSRF_TRUSTED_ORIGINS = [FRONTEND_URL]
+CSRF_TRUSTED_ORIGINS = [FRONTEND_URL, f"https://{os.environ.get('ALLOWED_HOSTS', '')}"]
 
 # Session cookie (optional, but same rule)
 SESSION_COOKIE_SAMESITE = "None"
@@ -67,8 +67,6 @@ else:
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
 

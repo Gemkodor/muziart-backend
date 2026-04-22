@@ -59,12 +59,16 @@ if DEBUG:
     SESSION_COOKIE_SECURE = False
     # Ne pas définir CSRF_COOKIE_DOMAIN
 else:
-    CSRF_COOKIE_DOMAIN = os.environ.get('CSRF_COOKIE_DOMAIN', '')
+    _csrf_domain = os.environ.get('CSRF_COOKIE_DOMAIN', '')
+    if _csrf_domain:
+        CSRF_COOKIE_DOMAIN = _csrf_domain
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
 

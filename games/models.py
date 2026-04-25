@@ -1,5 +1,5 @@
 from django.db import models
-from core.models import MusicNote, Profile
+from core.models import Profile
 
 class Track(models.Model):
     title = models.CharField(max_length=255)
@@ -23,17 +23,12 @@ class ScrollingGame(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     current_level = models.IntegerField(default=1)
     nb_correct_answers = models.IntegerField(default=0)
-    
+    current_level_bass = models.IntegerField(default=1)
+    nb_correct_answers_bass = models.IntegerField(default=0)
+
     def __str__(self):
         return f"Scrolling Game Level {self.current_level}"
 
-
-class ScrollingGameLevel(models.Model):
-    level_number = models.PositiveIntegerField(unique=True)
-    notes = models.ManyToManyField(MusicNote)
-    
-    def __str__(self):
-        return f"{self.level_number}"
 
 
 class InstrumentCategory(models.Model):

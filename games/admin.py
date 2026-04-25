@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Track, Instrument, InstrumentCategory, ScrollingGame, ScrollingGameLevel
+from .models import Track, Instrument, InstrumentCategory, ScrollingGame
 
 @admin.register(Track)
 class TrackAdmin(admin.ModelAdmin):
@@ -15,10 +15,6 @@ class Instrument(admin.ModelAdmin):
 class InstrumentCategoryAdmin(admin.ModelAdmin):
     list_display = ('name',)
 
-
-@admin.register(ScrollingGameLevel)
-class ScrollingGameLevelAdmin(admin.ModelAdmin):
-    list_display = ('level_number',)
 
 
 @admin.register(ScrollingGame)

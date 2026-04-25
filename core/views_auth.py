@@ -71,15 +71,12 @@ def user(request):
         }
         
         scrolling_game = ScrollingGame.objects.filter(profile=profile).first()
-        if scrolling_game:
-            data['scrollingGameLevel'] = scrolling_game.current_level
-            data['scrollingGameScore'] = scrolling_game.nb_correct_answers
-        else:
-            # Create a new ScrollingGame instance for the user if it doesn't exist
-            new_scrolling_game = ScrollingGame.objects.create(profile=profile)
-            new_scrolling_game.save()
-            data['scrollingGameLevel'] = new_scrolling_game.current_level
-            data['scrollingGameScore'] = new_scrolling_game.nb_correct_answers
+        if not scrolling_game:
+            scrolling_game = ScrollingGame.objects.create(profile=profile)
+        data['scrollingGameLevel'] = scrolling_game.current_level
+        data['scrollingGameScore'] = scrolling_game.nb_correct_answers
+        data['scrollingGameBassLevel'] = scrolling_game.current_level_bass
+        data['scrollingGameBassScore'] = scrolling_game.nb_correct_answers_bass
         
         return JsonResponse(data)
     return JsonResponse(

@@ -38,7 +38,7 @@ def seed_lessons(apps, schema_editor):
     for pk, title, slug, chapter, order in LESSONS:
         Lesson.objects.update_or_create(
             slug=slug,
-            defaults={"id": pk, "title": title, "chapter": chapter, "order": order},
+            defaults={"title": title, "chapter": chapter, "order": order},
         )
 
 

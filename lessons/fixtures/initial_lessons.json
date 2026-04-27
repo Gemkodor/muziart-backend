@@ -1,0 +1,282 @@
+[
+  {
+    "model": "lessons.lesson",
+    "pk": 1,
+    "fields": {
+      "title": "Écrire la musique",
+      "slug": "ecrire-la-musique",
+      "chapter": "1",
+      "order": 1
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 2,
+    "fields": {
+      "title": "Le rythme et la mesure",
+      "slug": "rythme-et-mesure",
+      "chapter": "2",
+      "order": 2
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 3,
+    "fields": {
+      "title": "Les clés musicales",
+      "slug": "cles-musicales",
+      "chapter": "3",
+      "order": 3
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 4,
+    "fields": {
+      "title": "Les altérations",
+      "slug": "alterations",
+      "chapter": "4",
+      "order": 4
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 5,
+    "fields": {
+      "title": "Les intervalles",
+      "slug": "intervalles",
+      "chapter": "5",
+      "order": 5
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 6,
+    "fields": {
+      "title": "Les gammes majeures",
+      "slug": "gammes-majeures",
+      "chapter": "6",
+      "order": 6
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 7,
+    "fields": {
+      "title": "Les gammes mineures",
+      "slug": "gammes-mineures",
+      "chapter": "7",
+      "order": 7
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 8,
+    "fields": {
+      "title": "Les accords",
+      "slug": "accords",
+      "chapter": "8",
+      "order": 8
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 9,
+    "fields": {
+      "title": "Les nuances et le tempo",
+      "slug": "nuances-et-tempo",
+      "chapter": "9",
+      "order": 9
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 10,
+    "fields": {
+      "title": "La forme musicale",
+      "slug": "forme-musicale",
+      "chapter": "10",
+      "order": 10
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 11,
+    "fields": {
+      "title": "Les cadences",
+      "slug": "cadences",
+      "chapter": "11",
+      "order": 11
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 12,
+    "fields": {
+      "title": "Les progressions d'accords",
+      "slug": "progressions-accords",
+      "chapter": "12",
+      "order": 12
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 13,
+    "fields": {
+      "title": "La ligne de basse",
+      "slug": "ligne-de-basse",
+      "chapter": "13",
+      "order": 13
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 14,
+    "fields": {
+      "title": "Les modes",
+      "slug": "modes",
+      "chapter": "14",
+      "order": 14
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 15,
+    "fields": {
+      "title": "La modulation",
+      "slug": "modulation",
+      "chapter": "15",
+      "order": 15
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 16,
+    "fields": {
+      "title": "Les ornements",
+      "slug": "ornements",
+      "chapter": "16",
+      "order": 16
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 17,
+    "fields": {
+      "title": "Les liaisons et articulations",
+      "slug": "liaisons-articulations",
+      "chapter": "17",
+      "order": 17
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 18,
+    "fields": {
+      "title": "La lecture rythmique avancée",
+      "slug": "rythme-avance",
+      "chapter": "18",
+      "order": 18
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 19,
+    "fields": {
+      "title": "L'harmonisation d'une mélodie",
+      "slug": "harmonisation",
+      "chapter": "19",
+      "order": 19
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 20,
+    "fields": {
+      "title": "Le chiffrage des accords",
+      "slug": "chiffrage-accords",
+      "chapter": "20",
+      "order": 20
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 21,
+    "fields": {
+      "title": "Introduction au contrepoint",
+      "slug": "contrepoint",
+      "chapter": "21",
+      "order": 21
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 22,
+    "fields": {
+      "title": "Analyse musicale — niveau 1",
+      "slug": "analyse-musicale",
+      "chapter": "22",
+      "order": 22
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 23,
+    "fields": {
+      "title": "La fugue",
+      "slug": "fugue",
+      "chapter": "23",
+      "order": 23
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 24,
+    "fields": {
+      "title": "L'harmonie jazz",
+      "slug": "harmonie-jazz",
+      "chapter": "24",
+      "order": 24
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 25,
+    "fields": {
+      "title": "La composition",
+      "slug": "composition",
+      "chapter": "25",
+      "order": 25
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 26,
+    "fields": {
+      "title": "L'improvisation",
+      "slug": "improvisation",
+      "chapter": "26",
+      "order": 26
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 27,
+    "fields": {
+      "title": "L'orchestration",
+      "slug": "orchestration",
+      "chapter": "27",
+      "order": 27
+    }
+  },
+  {
+    "model": "lessons.lesson",
+    "pk": 28,
+    "fields": {
+      "title": "La musique contemporaine",
+      "slug": "musique-contemporaine",
+      "chapter": "28",
+      "order": 28
+    }
+  }
+]

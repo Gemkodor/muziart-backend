@@ -5,6 +5,7 @@ from core.models import Profile
 from .models import Lesson, CompletedLesson
 from django.utils import timezone
 from quests.progress import check_quest_progress
+from daily.progress import complete_daily_activity
 
 
 def get_completed_ids(profile):
@@ -59,6 +60,7 @@ def complete_lesson(request, lesson_slug):
             profile.add_keys(5)
             profile.save()
             check_quest_progress(profile, 'read_lesson')
+            complete_daily_activity(profile, 'lesson', lesson.slug)
             message = "Lesson completed! Rewards granted."
         else:
             message = "Lesson already completed"

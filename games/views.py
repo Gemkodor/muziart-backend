@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.templatetags.static import static
 from games.models import Track, ScrollingGame, Instrument
 from quests.progress import check_quest_progress
+from daily.progress import complete_daily_activity
 import json
 import random
 
@@ -95,6 +96,7 @@ def end_scrolling_game_session(request):
 
             scrolling_game.save()
             check_quest_progress(profile, 'play_notes_reading')
+            complete_daily_activity(profile, 'notes_reading')
             return JsonResponse({
                 'success': True,
                 'current_level': scrolling_game.current_level,

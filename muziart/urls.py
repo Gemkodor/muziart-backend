@@ -23,5 +23,6 @@ urlpatterns = [
     path('api/cards/', include('cards.urls')),
     path('api/lessons/', include('lessons.urls')),
     path('api/quests/', include('quests.urls')),
+    path('api/daily/', include('daily.urls')),
     path('', include('core.urls'))
 ]

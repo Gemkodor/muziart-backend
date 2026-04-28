@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.templatetags.static import static
 from games.models import Track, ScrollingGame, Instrument
+from quests.progress import check_quest_progress
 import json
 import random
 
@@ -93,6 +94,7 @@ def end_scrolling_game_session(request):
                     scrolling_game.nb_correct_answers -= threshold
 
             scrolling_game.save()
+            check_quest_progress(profile, 'play_notes_reading')
             return JsonResponse({
                 'success': True,
                 'current_level': scrolling_game.current_level,

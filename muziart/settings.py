@@ -82,6 +82,7 @@ INSTALLED_APPS = [
     'games.apps.GamesConfig',
     'cards.apps.CardsConfig',
     'lessons.apps.LessonsConfig',
+    'quests.apps.QuestsConfig',
 ]
 
 MIDDLEWARE = [

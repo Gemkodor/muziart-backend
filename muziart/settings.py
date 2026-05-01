@@ -48,16 +48,17 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [FRONTEND_URL]
 
 # CSRF cookie
-CSRF_COOKIE_SAMESITE = "None"
 CSRF_TRUSTED_ORIGINS = [FRONTEND_URL, f"https://{os.environ.get('ALLOWED_HOSTS', '')}"]
 
-# Session cookie (optional, but same rule)
-SESSION_COOKIE_SAMESITE = "None"
-
 if DEBUG:
+    # SameSite=None requires Secure; in local dev use Lax instead (localhost is same-site)
+    CSRF_COOKIE_SAMESITE = "Lax"
+    SESSION_COOKIE_SAMESITE = "Lax"
     CSRF_COOKIE_SECURE = False
     SESSION_COOKIE_SECURE = False
 else:
+    CSRF_COOKIE_SAMESITE = "None"
+    SESSION_COOKIE_SAMESITE = "None"
     _cookie_domain = os.environ.get('COOKIE_DOMAIN', '')
     if _cookie_domain:
         CSRF_COOKIE_DOMAIN = _cookie_domain

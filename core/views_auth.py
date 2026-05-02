@@ -1,8 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.views.decorators.http import require_http_methods, require_POST
-from django.views.decorators.csrf import ensure_csrf_cookie
 from django.middleware.csrf import get_token
 from django.contrib.auth import authenticate, login, logout
 import json
@@ -24,6 +23,7 @@ def set_csrf_token(request):
     return JsonResponse({'csrfToken': get_token(request)})
 
 
+@csrf_exempt
 @require_http_methods(['POST'])
 def login_view(request):
     try:
@@ -42,7 +42,10 @@ def login_view(request):
         profile = get_object_or_404(Profile, user=user)
         profile.update_streak()
         profile.save()
-        return JsonResponse({'success': True})
+        # Return a fresh CSRF token so browsers that block cross-origin cookies
+        # (e.g. Firefox with strict tracking protection) can still make
+        # authenticated requests after login.
+        return JsonResponse({'success': True, 'csrfToken': get_token(request)})
     return JsonResponse(
         {'success': False, 'message': 'Invalid credentials'}, status=401
     )

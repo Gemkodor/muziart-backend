@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_http_methods, require_POST
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.middleware.csrf import get_token
 from django.contrib.auth import authenticate, login, logout
 import json
 import os
@@ -20,10 +21,7 @@ def index(request):
 @ensure_csrf_cookie
 @require_http_methods(['GET'])
 def set_csrf_token(request):
-    """
-    We set the CSRF cookie on the frontend
-    """
-    return JsonResponse({'message': 'CSRF cookie set'})
+    return JsonResponse({'csrfToken': get_token(request)})
 
 
 @require_http_methods(['POST'])

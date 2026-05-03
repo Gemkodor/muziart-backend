@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     # Blind test's urls
     path("blind-test/tracks/random/<int:nb_questions>/", views.random_track, name="random-track"),
+    path("blind-test/complete/", views.complete_blind_test, name="complete-blind-test"),
     
     # Scrolling game's urls
     path('scrolling-game/level/<str:clef>/<int:level_number>/', views.scrolling_game_level, name='scrolling-game-levels'),

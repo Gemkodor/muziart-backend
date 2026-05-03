@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from django.templatetags.static import static
+from django.views.decorators.http import require_POST
 from games.models import Track, ScrollingGame, Instrument
 from quests.progress import check_quest_progress
 from daily.progress import complete_daily_activity
@@ -111,6 +112,15 @@ def end_scrolling_game_session(request):
 def instruments_list(request):
     instruments = Instrument.objects.all().order_by('?')[:10].values()
     return JsonResponse(list(instruments), safe=False)
+
+
+@require_POST
+def complete_blind_test(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'success': False}, status=401)
+    complete_daily_activity(request.user.profile, 'blind_test')
+    check_quest_progress(request.user.profile, 'play_blind_test')
+    return JsonResponse({'success': True})
 
 
 def random_track(request, nb_questions):

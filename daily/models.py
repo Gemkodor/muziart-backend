@@ -32,6 +32,7 @@ class DailyActivity(models.Model):
         ('notes_reading',  'Lecture de notes'),
         ('blind_test',     'Blind test'),
         ('scales_builder', 'Construction de gammes'),
+        ('lyrics_game',    'Paroles de chanson'),
     ]
 
     program = models.ForeignKey(DailyProgram, on_delete=models.CASCADE, related_name='activities')

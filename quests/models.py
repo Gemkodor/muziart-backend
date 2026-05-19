@@ -6,6 +6,7 @@ class Quest(models.Model):
     QUEST_TYPES = [
         ('read_lesson', 'Lire des cours'),
         ('play_notes_reading', 'Jouer à Lecture de notes'),
+        ('learn_lyrics', 'Apprendre des paroles'),
     ]
 
     title = models.CharField(max_length=120)

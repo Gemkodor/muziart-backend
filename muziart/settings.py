@@ -82,6 +82,7 @@ INSTALLED_APPS = [
     'lessons.apps.LessonsConfig',
     'quests.apps.QuestsConfig',
     'daily.apps.DailyConfig',
+    'lyrics.apps.LyricsConfig',
 ]
 
 MIDDLEWARE = [

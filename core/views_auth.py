@@ -9,6 +9,8 @@ import os
 from core.forms import CreateUserForm
 from core.models import Profile
 from games.models import GameProgress
+from lessons.models import Lesson, CompletedLesson
+from cards.models import Card, ProfileCard
 
 
 def index(request):
@@ -76,6 +78,14 @@ def user(request):
             gp.game_type: {'level': gp.current_level, 'score': gp.current_score}
             for gp in game_progressions
         }
+
+        lesson_total = Lesson.objects.count()
+        lesson_completed = CompletedLesson.objects.filter(profile=profile, is_completed=True).count()
+        data['lessonProgress'] = {'completed': lesson_completed, 'total': lesson_total}
+
+        card_total = Card.objects.count()
+        card_unlocked = ProfileCard.objects.filter(profile=profile).count()
+        data['collectionProgress'] = {'unlocked': card_unlocked, 'total': card_total}
 
         return JsonResponse(data)
     return JsonResponse(

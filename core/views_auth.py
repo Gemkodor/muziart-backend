@@ -8,7 +8,7 @@ import json
 import os
 from core.forms import CreateUserForm
 from core.models import Profile
-from games.models import ScrollingGame, GameProgress
+from games.models import GameProgress
 
 
 def index(request):
@@ -70,14 +70,6 @@ def user(request):
             'nbKeys': profile.nb_keys,
             'streak': profile.streak_count,
         }
-        
-        scrolling_game = ScrollingGame.objects.filter(profile=profile).first()
-        if not scrolling_game:
-            scrolling_game = ScrollingGame.objects.create(profile=profile)
-        data['scrollingGameLevel'] = scrolling_game.current_level
-        data['scrollingGameScore'] = scrolling_game.nb_correct_answers
-        data['scrollingGameBassLevel'] = scrolling_game.current_level_bass
-        data['scrollingGameBassScore'] = scrolling_game.nb_correct_answers_bass
         
         game_progressions = GameProgress.objects.filter(profile=profile)
         data['gameProgressions'] = {

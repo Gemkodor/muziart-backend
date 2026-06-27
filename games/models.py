@@ -26,17 +26,6 @@ class GameProgress(models.Model):
         return f"{self.profile} — {self.game_type} lvl {self.current_level}"
 
     
-class ScrollingGame(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    current_level = models.IntegerField(default=1)
-    nb_correct_answers = models.IntegerField(default=0)
-    current_level_bass = models.IntegerField(default=1)
-    nb_correct_answers_bass = models.IntegerField(default=0)
-
-    def __str__(self):
-        return f"Scrolling Game Level {self.current_level}"
-
-
 
 class InstrumentCategory(models.Model):
     name = models.CharField(max_length=100, unique=True)

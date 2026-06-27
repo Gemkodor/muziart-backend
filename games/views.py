@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.templatetags.static import static
 from django.views.decorators.http import require_POST
-from games.models import Track, ScrollingGame, Instrument, GameProgress
+from games.models import Track, Instrument, GameProgress
 from quests.progress import check_quest_progress
 from daily.progress import complete_daily_activity
 import json
@@ -72,41 +72,6 @@ def scrolling_game_level(request, clef, level_number):
     }, safe=False)
 
 
-def end_scrolling_game_session(request):
-    if request.method == 'POST' and request.user.is_authenticated:
-        profile = request.user.profile
-        scrolling_game = ScrollingGame.objects.filter(profile=profile).first()
-        
-        if scrolling_game:
-            data = json.loads(request.body.decode('utf-8'))
-            score = data.get('score', 0)
-            clef = data.get('clef', 'treble')
-
-            if clef == 'bass':
-                scrolling_game.nb_correct_answers_bass += score
-                threshold = scrolling_game.current_level_bass * 50
-                if scrolling_game.nb_correct_answers_bass >= threshold:
-                    scrolling_game.current_level_bass += 1
-                    scrolling_game.nb_correct_answers_bass -= threshold
-            else:
-                scrolling_game.nb_correct_answers += score
-                threshold = scrolling_game.current_level * 50
-                if scrolling_game.nb_correct_answers >= threshold:
-                    scrolling_game.current_level += 1
-                    scrolling_game.nb_correct_answers -= threshold
-
-            scrolling_game.save()
-            check_quest_progress(profile, 'play_notes_reading')
-            complete_daily_activity(profile, 'notes_reading')
-            return JsonResponse({
-                'success': True,
-                'current_level': scrolling_game.current_level,
-                'score': scrolling_game.nb_correct_answers,
-                'current_level_bass': scrolling_game.current_level_bass,
-                'score_bass': scrolling_game.nb_correct_answers_bass,
-            })
-    
-    return JsonResponse({'success': False, 'message': 'Invalid request'}, status=400)
 
 
 @require_POST
@@ -135,6 +100,10 @@ def end_game_progression_session(request):
         progress.current_score -= threshold
 
     progress.save()
+
+    if game_slug in ('scrolling-treble', 'scrolling-bass'):
+        check_quest_progress(profile, 'play_notes_reading')
+        complete_daily_activity(profile, 'notes_reading')
 
     return JsonResponse({
         'level': progress.current_level,

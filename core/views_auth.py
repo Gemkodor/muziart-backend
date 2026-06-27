@@ -8,7 +8,7 @@ import json
 import os
 from core.forms import CreateUserForm
 from core.models import Profile
-from games.models import ScrollingGame
+from games.models import ScrollingGame, GameProgress
 
 
 def index(request):
@@ -79,6 +79,12 @@ def user(request):
         data['scrollingGameBassLevel'] = scrolling_game.current_level_bass
         data['scrollingGameBassScore'] = scrolling_game.nb_correct_answers_bass
         
+        game_progressions = GameProgress.objects.filter(profile=profile)
+        data['gameProgressions'] = {
+            gp.game_type: {'level': gp.current_level, 'score': gp.current_score}
+            for gp in game_progressions
+        }
+
         return JsonResponse(data)
     return JsonResponse(
         {'message': 'Not logged in'}, status=401

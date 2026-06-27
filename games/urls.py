@@ -10,6 +10,9 @@ urlpatterns = [
     path('scrolling-game/level/<str:clef>/<int:level_number>/', views.scrolling_game_level, name='scrolling-game-levels'),
     path('scrolling-game/end-session/', views.end_scrolling_game_session, name='end-scrolling-game-session'),
 
+    # Generic game progression
+    path('progression/end-session/', views.end_game_progression_session, name='end-game-progression-session'),
+
     # Instruments' urls
     path('instruments/', views.instruments_list, name='instruments-list'),
 ]

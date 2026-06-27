@@ -13,10 +13,17 @@ class Track(models.Model):
 
 
 class GameProgress(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    game_type = models.CharField(max_length=50)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='game_progressions')
+    game_type = models.CharField(max_length=50, db_index=True)
     current_level = models.IntegerField(default=1)
     max_score = models.IntegerField(default=0)
+    current_score = models.IntegerField(default=0)
+
+    class Meta:
+        unique_together = ('profile', 'game_type')
+
+    def __str__(self):
+        return f"{self.profile} — {self.game_type} lvl {self.current_level}"
 
     
 class ScrollingGame(models.Model):

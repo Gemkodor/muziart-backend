@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.templatetags.static import static
 from django.views.decorators.http import require_POST
-from games.models import Track, ScrollingGame, Instrument
+from games.models import Track, ScrollingGame, Instrument, GameProgress
 from quests.progress import check_quest_progress
 from daily.progress import complete_daily_activity
 import json
@@ -107,6 +107,39 @@ def end_scrolling_game_session(request):
             })
     
     return JsonResponse({'success': False, 'message': 'Invalid request'}, status=400)
+
+
+@require_POST
+def end_game_progression_session(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': 'Not authenticated'}, status=401)
+
+    data = json.loads(request.body.decode('utf-8'))
+    game_slug = data.get('game_slug', '').strip()
+    points = int(data.get('points', 0))
+
+    if not game_slug or points <= 0:
+        return JsonResponse({'error': 'Invalid data'}, status=400)
+
+    profile = request.user.profile
+    progress, _ = GameProgress.objects.get_or_create(
+        profile=profile,
+        game_type=game_slug,
+        defaults={'current_level': 1, 'current_score': 0},
+    )
+
+    progress.current_score += points
+    threshold = progress.current_level * 50
+    if progress.current_score >= threshold:
+        progress.current_level += 1
+        progress.current_score -= threshold
+
+    progress.save()
+
+    return JsonResponse({
+        'level': progress.current_level,
+        'score': progress.current_score,
+    })
 
 
 def instruments_list(request):

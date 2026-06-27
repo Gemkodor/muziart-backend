@@ -14,4 +14,5 @@ urlpatterns = [
 
     # Instruments' urls
     path('instruments/', views.instruments_list, name='instruments-list'),
+    path('instruments/categories/', views.instruments_categories, name='instruments-categories'),
 ]

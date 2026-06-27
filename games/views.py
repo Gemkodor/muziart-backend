@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.templatetags.static import static
 from django.views.decorators.http import require_POST
-from games.models import Track, Instrument, GameProgress
+from games.models import Track, Instrument, InstrumentCategory, GameProgress
 from quests.progress import check_quest_progress
 from daily.progress import complete_daily_activity
 import json
@@ -112,8 +112,18 @@ def end_game_progression_session(request):
 
 
 def instruments_list(request):
-    instruments = Instrument.objects.all().order_by('?')[:10].values()
-    return JsonResponse(list(instruments), safe=False)
+    instruments = list(
+        Instrument.objects.select_related('category')
+        .values('id', 'name', 'image_name', 'image_url', 'level', 'category_id', 'category__name')
+    )
+    return JsonResponse(instruments, safe=False)
+
+
+def instruments_categories(request):
+    categories = list(
+        InstrumentCategory.objects.values('id', 'name').order_by('name')
+    )
+    return JsonResponse(categories, safe=False)
 
 
 @require_POST

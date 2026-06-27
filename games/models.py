@@ -36,7 +36,8 @@ class InstrumentCategory(models.Model):
 
 class Instrument(models.Model):
     name = models.CharField(max_length=100)
-    image_name = models.CharField(max_length=100)
+    image_name = models.CharField(max_length=100, blank=True)
+    image_url = models.CharField(max_length=500, blank=True)
     level = models.IntegerField(default=1)
     category = models.ForeignKey(InstrumentCategory, null=True, blank=True, on_delete=models.PROTECT, related_name='instruments')
     

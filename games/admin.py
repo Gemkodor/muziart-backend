@@ -7,8 +7,11 @@ class TrackAdmin(admin.ModelAdmin):
 
 
 @admin.register(Instrument)
-class Instrument(admin.ModelAdmin):
-    list_display = ('name', 'category', 'image_name', 'level')
+class InstrumentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'category', 'level', 'image_name', 'image_url')
+    list_filter = ('category',)
+    search_fields = ('name',)
+    fields = ('name', 'category', 'level', 'image_url', 'image_name')
 
 
 @admin.register(InstrumentCategory)
